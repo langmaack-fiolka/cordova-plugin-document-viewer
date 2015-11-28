@@ -116,13 +116,18 @@
                 // get options from cordova
                 NSMutableDictionary *viewerOptions = [options objectForKey:@"options"];
                 NSLog(@"[pdfviewer] options: %@", viewerOptions);
+
+                //HOTFIX: Reset page to first page every time a document is opened.
+                NSNumber *pageReset = [NSNumber numberWithInt:1];
+                document.pageNumber = pageReset;
+
                 SDVReaderViewController *readerViewController = [[SDVReaderViewController alloc] initWithReaderDocument:document options:viewerOptions];
                 readerViewController.delegate = self;
                 readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
                 [self.viewController presentViewController:readerViewController animated:YES completion:nil];
-                
+
                 // result object
                 NSMutableDictionary *jsonObj = [ [NSMutableDictionary alloc]
                                                 initWithObjectsAndKeys :
