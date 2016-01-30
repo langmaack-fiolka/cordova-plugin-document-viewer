@@ -27,6 +27,7 @@
 
 #import "SitewaertsDocumentViewer.h"
 #import "SDVReaderViewController.h"
+#import "ReaderThumbCache.h"
 
 @interface SitewaertsDocumentViewer () <ReaderViewControllerDelegate>
 
@@ -150,6 +151,21 @@
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageToErrorObject:1];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)clearCacheForPdfFile:(CDVInvokedUrlCommand*)command {
+    //Clear Thumbchache
+    NSMutableDictionary *options = [command.arguments objectAtIndex:0];
+    NSString* url = [options objectForKey:@"url"];
+    
+    if (url != nil && url.length > 0) {
+        NSURL* absoluteURL = [[NSURL URLWithString:url relativeToURL:[self.webView.request URL]] absoluteURL];
+        ReaderDocument *document = [ReaderDocument withDocumentFilePath:absoluteURL.path password:nil];
+        [ReaderThumbCache removeThumbCacheWithGUID:document.guid];
+
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OK"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
 }
 
 #pragma mark - ReaderViewControllerDelegate methods

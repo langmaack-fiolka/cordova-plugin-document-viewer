@@ -23,6 +23,8 @@ var CDV_HANDLE_ACTIONS = {
 
 var exec = require('cordova/exec');
 
+console.log('plugin there');
+
 /*  private functions (not accessible via plugin API) */
 
 function getOptions(provided)
@@ -295,7 +297,32 @@ var SitewaertsDocumentViewer = {
             if (onError)
                 onError(e);
         }
+    },
+
+    clearCache: function (url, contentType, options, onPossible, onMissingApp, onImpossible, onError)
+    {
+        var errorPrefix = "Error in " + JS_HANDLE + ".clearCache(): ";
+        try
+        {
+            console.log('clearCache in Plugin JS');
+            exec(
+                //Success Handler
+                function(){},
+                //Error handler
+                function(){},
+                CDV_HANDLE,
+                'clearCacheForPdfFile',
+                [{url:url}]
+            );
+        }
+        catch (e)
+        {
+            window.console.log(errorPrefix + JSON.stringify(e));
+            if (onError)
+                onError(e);
+        }
     }
+
 };
 
 module.exports = SitewaertsDocumentViewer;

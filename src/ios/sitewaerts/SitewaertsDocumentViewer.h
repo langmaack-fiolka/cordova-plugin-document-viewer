@@ -35,4 +35,6 @@
 
 - (void)viewDocument:(CDVInvokedUrlCommand*)command;
 
+- (void)clearCacheForPdfFile:(CDVInvokedUrlCommand*)command;
+
 @end
